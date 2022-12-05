@@ -49,3 +49,9 @@ Route::rule('add_banner','Banner/addBanner','post')->middleware([\app\front\midd
 Route::rule('get_banner','Banner/getBanner');
 Route::rule('get_user_banner','Banner/getUserBanner');
 Route::rule('get_all_banner','Banner/getAllBanner');
+
+//评论 comment
+Route::rule('add_comment','Comment/addComment')->middleware([\app\front\middleware\Comment::class]);
+Route::rule('add_reply','Reply/addReply')->middleware([\app\front\middleware\Reply::class]);
+// 获取评论 {art_id}
+Route::rule('get_comment','Comment/getComment','get');
