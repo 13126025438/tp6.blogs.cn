@@ -2,6 +2,7 @@
 
 namespace app\front\service;
 use app\model\Reply as ReplyModel;
+use app\model\User as UserModel;
 class Reply
 {
     public static function writeReply($params)
@@ -15,7 +16,9 @@ class Reply
         }
 
         $write = (new ReplyModel())->save($params);
-
+        if($write){
+            (new UserModel())->where('id',$params['user_id'])->inc('user_comment',1)->update();
+        }
 //  return fail('','至少填一个身份才能评论喔！（QQ /邮箱 /登录）');
 
         return $write;

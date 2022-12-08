@@ -5,7 +5,10 @@ namespace app\model;
 class Article extends BaseModel
 {
     protected $hidden = ["delete_time","update_time"];
-    protected $dateFormat = 'Y 年 m 月 d 日';
+    protected $dateFormat = 'Y-m-d H:i:s';
+    protected $type = [
+        'create_time' => 'Y-m',
+    ];
 
     public function searchArticleTitleAttr($query, $value, $data)
     {
