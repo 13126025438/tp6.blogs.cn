@@ -24,6 +24,8 @@ Route::group(function (){
 Route::rule('get_article','Article/getArticle');
 Route::rule('get_article_page','Article/getArticlePage','get');
 Route::rule('get_art_detail','Article/getArtDetail','get');
+//文章阅读数量 + 1
+Route::rule('add_art_read_count','Article/addArtReadCount');
 //随机文章
 Route::rule('rand_article','Article/randArticle');
 Route::rule('search','Article/search'); //搜索
@@ -40,7 +42,14 @@ Route::rule('*')->allowCrossDomain();
 Route::rule('art_test','Test/artTest','post');
 
 //站点统计
-Route::rule('station_count','website/stationCount');
+Route::rule('station_count','Website/stationCount');
+//echarts 图表数据
+Route::rule('amount_count','/Website/amount_count');
+Route::rule('barCharts','/Website/barCharts');
+Route::rule('visit_ip','Website/visitIp'); //记录访问ip
+Route::rule('art_log','Website/art_log'); //记录访问ip
+Route::rule('line_chart','Website/line_chart'); //记录访问ip line_chart
+
 //user
 Route::rule('get_user','User/getUser');
 
@@ -49,3 +58,9 @@ Route::rule('add_banner','Banner/addBanner','post')->middleware([\app\front\midd
 Route::rule('get_banner','Banner/getBanner');
 Route::rule('get_user_banner','Banner/getUserBanner');
 Route::rule('get_all_banner','Banner/getAllBanner');
+
+//评论 comment
+Route::rule('add_comment','Comment/addComment')->middleware([\app\front\middleware\Comment::class]);
+Route::rule('add_reply','Reply/addReply')->middleware([\app\front\middleware\Reply::class]);
+// 获取评论 {art_id}
+Route::rule('get_comment','Comment/getComment','get');
