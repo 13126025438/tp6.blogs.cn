@@ -8,6 +8,7 @@ use app\front\service\Article as ArticleService;
 use app\model\Article as ArticleModel;
 class Article
 {
+    //新增文章
     public function article_add(Request $request)
     {
         $params = $request->params;
@@ -58,7 +59,11 @@ class Article
     //获取随机文章、
     public function randArticle()
     {
-        $rand_art = ArticleModel::orderRaw('rand()')->limit(5)->select();
+        $rand_art = ArticleModel::orderRaw('rand()')->limit(5)->field('
+         FROM_UNIXTIME(create_time,"%Y 年 %m 月 %d 日") as create_time,
+        article_category,article_class_icon,article_content,article_detail,article_icon,article_img,
+        article_it_icon,article_read_icon,article_status,article_time_icon,article_title,id,is_top,read_count,user_id
+        ')->select();
         if(!$rand_art){
             return fail('','获取随机文章出错了');
         }
@@ -74,7 +79,12 @@ class Article
         }
         $val = ArticleModel::withSearch(['article_title'],[
             'article_title' => $keyword
-        ])->select();
+        ])->field('
+          FROM_UNIXTIME(create_time,"%Y 年 %m 月 %d 日") as create_time,
+        article_category,article_class_icon,article_content,article_detail,article_icon,article_img,
+        article_it_icon,article_read_icon,article_status,article_time_icon,article_title,id,is_top,read_count,user_id
+
+        ')->select();
 //        if(!$val){
 //            return fail('','搜索不到，换个词试试');
 //        }
@@ -91,10 +101,46 @@ class Article
         }
         $userArt = ArticleModel::where([
             'user_id' => $user_id,
-        ])->select();
+        ])->field('
+          FROM_UNIXTIME(create_time,"%Y 年 %m 月 %d 日") as create_time,
+        article_category,article_class_icon,article_content,article_detail,article_icon,article_img,
+        article_it_icon,article_read_icon,article_status,article_time_icon,article_title,id,is_top,read_count,user_id
+
+        ')->select();
         if(sizeof($userArt) < 1){
             return success([],'您暂未发布文章，快去试试吧！');
         }
         return success($userArt);
+    }
+    //文章阅读数量 + 1
+    public function addArtReadCount(Request $request){
+        $params = $request->param();
+        $art_id = $params['art_id'];
+        if(!$art_id){
+            return fail([],'文章id丢失');
+        }
+        $readCount = (new ArticleModel())->where('id',$art_id)->inc('read_count',1)->update();
+        return success($readCount);
+    }
+    //分类二级导航获取文章
+    public function get_cate_art(Request $request)
+    {
+        $params = $request->param();
+        $cate = $params['category'];
+        $article =ArticleModel::where([
+            'article_category'    =>  $cate,
+            'article_status' => 0
+        ])->field('
+         FROM_UNIXTIME(create_time,"%Y 年 %m 月 %d 日") as create_time,
+        article_category,article_class_icon,article_content,article_detail,article_icon,article_img,
+        article_it_icon,article_read_icon,article_status,article_time_icon,article_title,id,is_top,read_count,user_id
+        ')->select();
+        if(!$cate){
+            return fail('','分类二级导航category参数不能为空');
+        }
+        if(!(count($article) > 0)){
+            return fail($article,'没找到文章');
+        }
+        return success($article,'获取分类二级导航获取文章成功');
     }
 }

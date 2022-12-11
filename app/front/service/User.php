@@ -43,4 +43,6 @@ class User
         $token_salt = config('code.token_salt');
         return md5($randStr . $timestamp . $token_salt);
     }
+
+
 }

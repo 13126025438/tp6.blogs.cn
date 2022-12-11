@@ -3,7 +3,7 @@
 namespace app\front\service;
 use app\model\Article as ArticleModel;
 use app\model\ArtContent as ArtContentModel;
-
+use app\model\User as UserModel;
 use think\facade\Db;
 
 class Article
@@ -45,6 +45,7 @@ class Article
             if(!$article){
                 throw new \Exception('新增文章失败-article');
             }
+            $countArt= (new UserModel())->where('id',$article->user_id)->inc('user_article',1)->update();
             $art_id = $article->id;
             $art_uid = $article->user_id;
             $art_content = null;
@@ -76,7 +77,12 @@ class Article
     //分页
     public static function art_page($page,$pageSize)
     {
-        $artPage = ArticleModel::where('article_status',0)->page($page,$pageSize)->order('id','desc')->select();
+        $artPage = ArticleModel::where('article_status' , 0)->field('
+        FROM_UNIXTIME(create_time,"%Y 年 %m 月 %d 日") as create_time,
+        article_category,article_class_icon,article_content,article_detail,article_icon,article_img,
+        article_it_icon,article_read_icon,article_status,article_time_icon,article_title,id,is_top,read_count,user_id
+
+        ')->page($page,$pageSize)->order(['is_top' => 'desc','id'=>'desc'])->select();
         $total = ArticleModel::where('article_status',0)->count();
         $data = [
             'total' => $total,

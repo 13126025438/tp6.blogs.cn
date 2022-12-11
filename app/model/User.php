@@ -2,6 +2,9 @@
 
 namespace app\model;
 
+use app\model\Comment as CommentModel;
+use app\model\Reply as ReplyModel;
+
 class User extends BaseModel
 {
     protected $hidden = ["delete_time","update_time"];
@@ -22,4 +25,6 @@ class User extends BaseModel
     {
         return $this->hasOne(Banner::class,'user_id');
     }
+
+
 }

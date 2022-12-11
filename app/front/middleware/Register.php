@@ -29,7 +29,8 @@ class Register
 //            halt($newUser);
             $request->newUser = $newUser;
         }else{
-            throw new \Exception('用户名被占用');
+            return fail([],'用户名被占用');
+
         }
         return $next($request);
     }
