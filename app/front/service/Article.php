@@ -77,12 +77,12 @@ class Article
     //分页
     public static function art_page($page,$pageSize)
     {
-        $artPage = ArticleModel::where('article_status',0)->field('
+        $artPage = ArticleModel::where('article_status' , 0)->field('
         FROM_UNIXTIME(create_time,"%Y 年 %m 月 %d 日") as create_time,
         article_category,article_class_icon,article_content,article_detail,article_icon,article_img,
         article_it_icon,article_read_icon,article_status,article_time_icon,article_title,id,is_top,read_count,user_id
 
-        ')->page($page,$pageSize)->order('id','desc')->select();
+        ')->page($page,$pageSize)->order(['is_top' => 'desc','id'=>'desc'])->select();
         $total = ArticleModel::where('article_status',0)->count();
         $data = [
             'total' => $total,

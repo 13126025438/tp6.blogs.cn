@@ -120,8 +120,25 @@ class Website
         $art = self::data_allocation('bar');
         return success($art);
     }
-    //3.
-    //2.柱状图
+
+    //3.分类统计 图
+    public function category_count()
+    {
+//        $cate = [
+//            'ThinkPHP6' => ArticleModel::where('article_category', 'ThinkPHP6')->count(),
+//            '每天/技巧' => ArticleModel::where('article_category', '每天/技巧')->count(),
+//            '每日一练' => ArticleModel::where('article_category', '每日一练')->count(),
+//            '值得一看' => ArticleModel::where('article_category', '值得一看')->count(),
+//            '实用干货' => ArticleModel::where('article_category', '实用干货')->count(),
+//            '闲言碎语' => ArticleModel::where('article_category', '闲言碎语')->count()
+//        ];
+        $cate = ['ThinkPHP6','每天/技巧','每日一练','值得一看','实用干货','闲言碎语'];
+        $result = [];
+        foreach ($cate as $key => &$val) {
+            $result[$val] = ArticleModel::where('article_category',$val)->count();
+        }
+        return success($result);
+    }
 
 
     //文章上传日志

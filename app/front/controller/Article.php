@@ -122,4 +122,25 @@ class Article
         $readCount = (new ArticleModel())->where('id',$art_id)->inc('read_count',1)->update();
         return success($readCount);
     }
+    //分类二级导航获取文章
+    public function get_cate_art(Request $request)
+    {
+        $params = $request->param();
+        $cate = $params['category'];
+        $article =ArticleModel::where([
+            'article_category'    =>  $cate,
+            'article_status' => 0
+        ])->field('
+         FROM_UNIXTIME(create_time,"%Y 年 %m 月 %d 日") as create_time,
+        article_category,article_class_icon,article_content,article_detail,article_icon,article_img,
+        article_it_icon,article_read_icon,article_status,article_time_icon,article_title,id,is_top,read_count,user_id
+        ')->select();
+        if(!$cate){
+            return fail('','分类二级导航category参数不能为空');
+        }
+        if(!(count($article) > 0)){
+            return fail($article,'没找到文章');
+        }
+        return success($article,'获取分类二级导航获取文章成功');
+    }
 }

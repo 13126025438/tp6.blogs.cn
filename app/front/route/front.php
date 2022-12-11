@@ -30,6 +30,9 @@ Route::rule('add_art_read_count','Article/addArtReadCount');
 Route::rule('rand_article','Article/randArticle');
 Route::rule('search','Article/search'); //搜索
 Route::rule('get_user_art','Article/getUserArt','get');//获取用户的文章 params id
+Route::rule('get_cate_art','Article/get_cate_art','get');//获取分类二级的文章
+
+
 //文件上传
 Route::rule('upload-<fileExt>','Upload/upFile','post')->middleware([\app\front\middleware\Upload::class]);
 Route::rule('ups-<fileExt>','Op/ups','post')->middleware([\app\front\middleware\Op::class]);
@@ -49,6 +52,7 @@ Route::rule('barCharts','/Website/barCharts');
 Route::rule('visit_ip','Website/visitIp'); //记录访问ip
 Route::rule('art_log','Website/art_log'); //记录访问ip
 Route::rule('line_chart','Website/line_chart'); //记录访问ip line_chart
+Route::rule('category_count','Website/category_count'); //category_count 分类统计 图
 
 //user
 Route::rule('get_user','User/getUser');
